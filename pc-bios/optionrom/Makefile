@@ -15,6 +15,10 @@ override CFLAGS += -O2
 endif
 override CFLAGS += -march=i486
 
+# If -fcf-protection is enabled in flags or compiler defaults that will
+# conflict with -march=i486 on Ubuntu 20.04 (not in 22.04 apparently)
+override CFLAGS += -fcf-protection=none
+
 # Drop -fstack-protector and the like
 QEMU_CFLAGS := $(filter -W%, $(QEMU_CFLAGS)) $(CFLAGS_NOPIE) -ffreestanding
 QEMU_CFLAGS += $(call cc-option, $(QEMU_CFLAGS), -fno-stack-protector)
